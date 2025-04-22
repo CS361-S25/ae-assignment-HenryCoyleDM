@@ -9,9 +9,20 @@
 class Grass : public Organism {
 
     public:
+    Grass(MammothSteppe* _world, size_t _position, emp::Random* _random) : Organism(_world, _position, _random) {
+
+    }
+    
+    public:
     std::string GetColor() {
-        std::cout << "GetColor of Grass called" << std::endl;
         return emp::ColorRGB(0, 255, 0);
+    }
+
+    public:
+    void Process() {
+        Organism::Process();
+        std::cout << "Grass is processed";
+        points += random->GetDouble(0, 1);
     }
 };
 

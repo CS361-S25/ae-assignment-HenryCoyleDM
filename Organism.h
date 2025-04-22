@@ -4,13 +4,32 @@
 #include "emp/math/Random.hpp"
 #include "emp/tools/string_utils.hpp"
 
+// forward declaration
+class MammothSteppe;
+
 class Organism {
 
     public:
-    virtual std::string GetColor() {
-        std::cout << "GetColor of superclass called" << std::endl;
-        return emp::ColorRGB(0, 0, 0);
-    }
+    double points = 0;
+    emp::Random* random;
+    size_t position;
+
+    public:
+    MammothSteppe* world;
+
+    public:
+    Organism(MammothSteppe* _world, size_t _position, emp::Random* _random);
+
+    public:
+    virtual std::string GetColor();
+
+    // process this organism
+    public:
+    virtual void Process();
+
+    // kill this organism
+    public:
+    void Die();
 };
 
 #endif

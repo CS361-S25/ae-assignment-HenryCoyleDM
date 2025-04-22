@@ -19,6 +19,8 @@ class AEAnimate : public emp::web::Animate {
     // the size in pixels of the grid
     const double width{num_w_boxes * RECT_SIDE};
     const double height{num_h_boxes * RECT_SIDE};
+    // the first frame is generation 1
+    int generation = 0;
     // random number generator for all random processes
     emp::Random random{5};
     // canvas for painting
@@ -36,17 +38,25 @@ class AEAnimate : public emp::web::Animate {
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
         // add starting organisms for the two species to the world
-        Grass first_grass;
-        world.AddOrgAt(&first_grass, 0);
-        Mammoth first_mammoth;
-        world.AddOrgAt(&first_mammoth, 1);
-        // world.Inject(*first_mammoth);
+        Grass* first_grass = new Grass(&world, 0, &random);
+        world.AddOrgAt(first_grass, 0);
+        Mammoth* first_mammoth = new Mammoth(&world, 1, &random);
+        world.AddOrgAt(first_mammoth, 1);
         
     }
 
     public:
     void DoFrame() override {
         canvas.Clear();
+        generation++;
+        if (generation > 1) {
+            world.Update();
+        }
+        PaintAllSquares();
+    }
+
+    private:
+    void PaintAllSquares() {
         for (int x=0; x<num_w_boxes; x++) {
             for (int y=0; y<num_h_boxes; y++) {
                 PaintSquareIfOccupied(x, y);
@@ -56,15 +66,18 @@ class AEAnimate : public emp::web::Animate {
 
     private:
     void PaintSquareIfOccupied(int x, int y) {
-        if (world.IsOccupied(y * num_w_boxes + x)) {
-            emp::Ptr<Organism> organism_at = world.GetOrgPtr(y * num_w_boxes + x);
-            std::cout << "cell index is " << std::to_string(y * num_w_boxes + x) << std::endl;
-            std::cout << "cell " << std::to_string(x) << ", " << std::to_string(y) << " has an organism\n";
-            std::string color_at = organism_at->GetColor();
-            DrawRect(x, y, color_at);
+        DrawRect(x, y, GetSquareColor(x, y));
+    }
+
+    private:
+    std::string GetSquareColor(int x, int y) {
+        int world_index = y * num_w_boxes + x;
+        if (world.IsOccupied(world_index)) {
+            emp::Ptr<Organism> organism_at = world.GetOrgPtr(world_index);
+            return organism_at->GetColor();
         } else {
-            std::cout << "cell " << std::to_string(x) << ", " << std::to_string(y) << " is empty\n";
-            DrawRect(x, y, "white");
+            // empty cells are white
+            return emp::ColorRGB(255, 255, 255);
         }
     }
 

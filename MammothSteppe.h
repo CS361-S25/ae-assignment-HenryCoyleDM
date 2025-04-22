@@ -5,19 +5,17 @@
 #include "emp/math/random_utils.hpp"
 #include "emp/math/Random.hpp"
 
-#include "Organism.h"
+class Organism;
 
 class MammothSteppe : public emp::World<Organism> {
     private:
     emp::Random* random;
 
     public:
-    MammothSteppe(emp::Random* _random) : random(_random) {}
+    MammothSteppe(emp::Random* _random);
     
     public:
-    void Update() {
-
-    }
+    void Update();
 };
 
 #endif
