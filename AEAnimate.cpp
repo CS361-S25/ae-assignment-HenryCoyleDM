@@ -36,11 +36,12 @@ class AEAnimate : public emp::web::Animate {
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
         // add starting organisms for the two species to the world
+        Grass first_grass;
+        world.AddOrgAt(&first_grass, 0);
         Mammoth first_mammoth;
         world.AddOrgAt(&first_mammoth, 1);
         // world.Inject(*first_mammoth);
-        Grass first_grass;
-        world.AddOrgAt(&first_grass, 0);
+        
     }
 
     public:
