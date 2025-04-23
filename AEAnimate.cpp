@@ -6,6 +6,7 @@
 #include "Organism.hpp"
 #include "Mammoth.hpp"
 #include "Grass.hpp"
+#include "Tree.hpp"
 
 // document for displaying stuff
 emp::web::Document doc{"target"};
@@ -37,11 +38,21 @@ class AEAnimate : public emp::web::Animate {
         // set the world size and let it handle the toroidal structure
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
-        // add starting organisms for the two species to the world
+        // add starting organisms to the world: 5 grasses, 1 mammoth, and 1 tree
         Grass* first_grass = new Grass();
         world.AddOrgAt(first_grass, 0);
+        Grass* second_grass = new Grass();
+        world.AddOrgAt(second_grass, 1340);
+        Grass* third_grass = new Grass();
+        world.AddOrgAt(third_grass, 2378);
+        Grass* fourth_grass = new Grass();
+        world.AddOrgAt(fourth_grass, 888);
+        Grass* fifth_grass = new Grass();
+        world.AddOrgAt(fifth_grass, 245);
         Mammoth* first_mammoth = new Mammoth();
         world.AddOrgAt(first_mammoth, 55);
+        Tree* first_tree = new Tree();
+        world.AddOrgAt(first_tree, 378);
         /* Organism* first_organism = new Organism();
         world.AddOrgAt(first_organism, 0); */
         
@@ -76,11 +87,11 @@ class AEAnimate : public emp::web::Animate {
         int world_index = y * num_w_boxes + x;
         if (world.IsOccupied(world_index)) {
             emp::Ptr<Organism> organism_at = world.GetOrgPtr(world_index);
-            std::cout << "Getting organism color\n";
+            // std::cout << "Getting organism color\n";
             return organism_at->GetColor();
         } else {
-            // empty cells are whiteish
-            return "rgb(232, 233, 228)";
+            // empty cells are white
+            return "rgb(255, 255, 255)";
         }
     }
 

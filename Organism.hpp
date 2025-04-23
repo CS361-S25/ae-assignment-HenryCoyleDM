@@ -34,7 +34,7 @@ class Organism {
     }
 
     public:
-    virtual bool CanReproduce() {
+    virtual bool CanReproduce(emp::Random* random, Organism* organism_at_target) {
         return false;
     }
 
@@ -49,7 +49,7 @@ class Organism {
     Output: whether this organism moves to that position
     */
     public:
-    virtual bool TryMoveToPlaceOfOrganism(Organism* organism_at_target) {
+    virtual bool TryMoveToPlaceOfOrganism(Organism* organism_at_target, emp::Random* random) {
         return false;
     }
 

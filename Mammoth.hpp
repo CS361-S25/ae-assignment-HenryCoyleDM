@@ -21,7 +21,7 @@ class Mammoth : public Organism {
     
     public:
     std::string GetColor() {
-        return "rgb(94, 65, 40)";
+        return "rgb(109, 41, 27)";
     }
 
     public:
@@ -30,8 +30,9 @@ class Mammoth : public Organism {
     }
 
     public:
-    bool CanReproduce() {
-        return points > 10;
+    bool CanReproduce(emp::Random* random, Organism* organism_at_target) {
+        bool target_is_bulldozable = organism_at_target == nullptr || organism_at_target->GetType() == "Grass";
+        return target_is_bulldozable && points > 10;
     }
 
     public:
@@ -45,18 +46,29 @@ class Mammoth : public Organism {
     A mammoth is allowed to move to the location of grass. If it does, it eats it and gets a point.
     */
     public:
-    bool TryMoveToPlaceOfOrganism(Organism* organism_at_target) {
+    bool TryMoveToPlaceOfOrganism(Organism* organism_at_target, emp::Random* random) {
         if (has_moved_this_generation) {
             return false;
         }
-        std::cout << "Mammoth is trying to move\n";
+        // std::cout << "Mammoth is trying to move\n";
         if (organism_at_target == nullptr) {
             return true;
         } else {
-            bool is_grass = organism_at_target->GetType() == "Grass";
-            if (is_grass) {
+            std::string organism_at_target_type = organism_at_target->GetType();
+            if (organism_at_target_type == "Grass") {
                 points += 1;
                 return true;
+            } else if (organism_at_target_type == "Tree") {
+                if (random->GetDouble() < 0.2) {
+                    if (points < 2) {
+                        // sustain the mammoths for a bit longer while they're trampling forests
+                        points += 0.1;
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+                return random->GetDouble() < 0.2;
             } else {
                 return false;
             }

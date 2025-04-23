@@ -1,5 +1,5 @@
-#ifndef GRASS
-#define GRASS
+#ifndef TREE
+#define TREE
 
 #include "emp/math/Random.hpp"
 #include "emp/tools/string_utils.hpp"
@@ -7,39 +7,40 @@
 #include "Organism.hpp"
 #include "MammothSteppe.hpp"
 
-class Grass : public Organism {
+class Tree : public Organism {
 
     public:
-    Grass() : Organism() {
-
+    Tree() : Organism() {
+        
     }
     
     public:
     std::string GetColor() {
-        return "rgb(0, 255, 0)";
+        return "rgb(27, 52, 101)";
     }
 
     public:
     void Process(emp::Random* random) {
         Organism::Process(random);
-        // std::cout << "Grass is processed\n";
+        // std::cout << "Tree is processed\n";
         points += random->GetDouble();
     }
 
     public:
     std::string GetType() {
-        return "Grass";
+        return "Tree";
     }
 
     public:
     bool CanReproduce(emp::Random* random, Organism* organism_at_target) {
-        return organism_at_target == nullptr && points > 1.5;
+        bool target_is_bulldozable = organism_at_target == nullptr || organism_at_target->GetType() == "Grass";
+        return target_is_bulldozable && points > random->GetDouble(10, 20);
     }
 
     public:
     Organism* Reproduce() {
-        Organism* offspring = new Grass();
-        points -= 1.5;
+        Organism* offspring = new Tree();
+        points -= 15;
         return offspring;
     }
 };

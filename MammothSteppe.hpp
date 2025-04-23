@@ -66,10 +66,7 @@ class MammothSteppe : public emp::World<Organism> {
             if (!IsOccupied(i)) {
                 continue;
             }
-            bool can_reproduce = pop[i]->CanReproduce();
-            if (can_reproduce) {
-                ReproduceOrganismAt(i);
-            }
+            TryReproduceOrganismAt(i);
         }
     }
 
@@ -77,12 +74,21 @@ class MammothSteppe : public emp::World<Organism> {
     Reproduce the organism at location index. Chooses a random adjacent cell, and if it is empty, creates an offspring and places it there
     */
     private:
-    void ReproduceOrganismAt(int index) {
+    void TryReproduceOrganismAt(int index) {
         emp::WorldPosition offspring_position = GetRandomNeighborPos(index);
-        if (!IsOccupied(offspring_position)) {
-            Organism* offspring = pop[index]->Reproduce();
-            AddOrgAt(offspring, offspring_position);
+        emp::Ptr<Organism> organism_at_target = GetOrgPtr(offspring_position.GetIndex());
+        bool can_reproduce = pop[index]->CanReproduce(random, organism_at_target);
+        if (can_reproduce) {
+            ReproduceOrganismTo(index, offspring_position.GetIndex());
         }
+    }
+
+    private:
+    void ReproduceOrganismTo(int source_position, int target_position) {
+        emp::Ptr<Organism> organism_at_source = GetOrgPtr(source_position);
+        Organism* offspring = organism_at_source->Reproduce();
+        RemoveOrgAt(target_position);
+        AddOrgAt(offspring, target_position);
     }
 
     private:
@@ -95,7 +101,7 @@ class MammothSteppe : public emp::World<Organism> {
             std::cout << "Trying to move organism at " << std::to_string(i) << ".\n";
             emp::WorldPosition target_position = GetRandomNeighborPos(i);
             emp::Ptr<Organism> organism_at_target = GetOrgPtr(target_position.GetIndex());
-            bool organism_is_moving = pop[i]->TryMoveToPlaceOfOrganism(organism_at_target);
+            bool organism_is_moving = pop[i]->TryMoveToPlaceOfOrganism(organism_at_target, random);
             if (organism_is_moving) {
                 MoveOrganism(i, target_position.GetIndex());
             }
