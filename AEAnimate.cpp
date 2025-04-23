@@ -2,10 +2,10 @@
 #include "emp/web/Animate.hpp"
 #include "emp/web/web.hpp"
 
-#include "MammothSteppe.h"
-#include "Organism.h"
-#include "Mammoth.h"
-#include "Grass.h"
+#include "MammothSteppe.hpp"
+#include "Organism.hpp"
+#include "Mammoth.hpp"
+#include "Grass.hpp"
 
 // document for displaying stuff
 emp::web::Document doc{"target"};
@@ -38,10 +38,12 @@ class AEAnimate : public emp::web::Animate {
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
         // add starting organisms for the two species to the world
-        Grass* first_grass = new Grass(&world, 0, &random);
+        Grass* first_grass = new Grass();
         world.AddOrgAt(first_grass, 0);
-        Mammoth* first_mammoth = new Mammoth(&world, 1, &random);
+        Mammoth* first_mammoth = new Mammoth();
         world.AddOrgAt(first_mammoth, 1);
+        /* Organism* first_organism = new Organism();
+        world.AddOrgAt(first_organism, 0); */
         
     }
 

@@ -4,18 +4,23 @@
 #include "emp/math/Random.hpp"
 #include "emp/tools/string_utils.hpp"
 
-#include "Organism.h"
+#include "Organism.hpp"
 
 class Mammoth : public Organism {
 
     public:
-    Mammoth(MammothSteppe* _world, size_t _position, emp::Random* _random) : Organism(_world, _position, _random) {
+    Mammoth() : Organism() {
         
     }
     
     public:
     std::string GetColor() {
-        return emp::ColorRGB(255, 0, 0);
+        return "rgb(255, 0, 0)";
+    }
+
+    public:
+    std::string GetType() {
+        return "Mammoth";
     }
 };
 
