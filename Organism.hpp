@@ -9,6 +9,8 @@ class Organism {
     public:
     double points = 0;
     int age = 0;
+    // prevents organisms from moving twice in one generation
+    bool has_moved_this_generation;
 
     public:
     Organism() : points(0), age(0) {}
@@ -23,6 +25,7 @@ class Organism {
     virtual void Process(emp::Random* random) {
         std::cout << "Processed organism with " << std::to_string(points) << " points\n";
         age++;
+        has_moved_this_generation = false;
     }
 
     public:

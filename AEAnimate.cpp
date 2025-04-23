@@ -79,8 +79,8 @@ class AEAnimate : public emp::web::Animate {
             std::cout << "Getting organism color\n";
             return organism_at->GetColor();
         } else {
-            // empty cells are white
-            return emp::ColorRGB(255, 255, 255);
+            // empty cells are whiteish
+            return "rgb(232, 233, 228)";
         }
     }
 

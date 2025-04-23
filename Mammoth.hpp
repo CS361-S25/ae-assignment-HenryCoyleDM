@@ -21,7 +21,7 @@ class Mammoth : public Organism {
     
     public:
     std::string GetColor() {
-        return "rgb(255, 0, 0)";
+        return "rgb(94, 65, 40)";
     }
 
     public:
@@ -46,6 +46,9 @@ class Mammoth : public Organism {
     */
     public:
     bool TryMoveToPlaceOfOrganism(Organism* organism_at_target) {
+        if (has_moved_this_generation) {
+            return false;
+        }
         std::cout << "Mammoth is trying to move\n";
         if (organism_at_target == nullptr) {
             return true;

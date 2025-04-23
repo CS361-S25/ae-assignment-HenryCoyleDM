@@ -109,6 +109,7 @@ class MammothSteppe : public emp::World<Organism> {
         // remove the organism without deleting it
         pop[source_position] = nullptr;
         RemoveOrgAt(target_position);
+        organism_at_source->has_moved_this_generation = true;
         AddOrgAt(organism_at_source, target_position);
     }
 };
