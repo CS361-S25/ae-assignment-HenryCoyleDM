@@ -12,8 +12,8 @@ emp::web::Document doc{"target"};
 
 class AEAnimate : public emp::web::Animate {
     // the size of the world in cells
-    const int num_h_boxes = 10;
-    const int num_w_boxes = 10;
+    const int num_h_boxes = 50;
+    const int num_w_boxes = 50;
     // the size in pixels of one cell
     const double RECT_SIDE = 10;
     // the size in pixels of the grid
@@ -41,7 +41,7 @@ class AEAnimate : public emp::web::Animate {
         Grass* first_grass = new Grass();
         world.AddOrgAt(first_grass, 0);
         Mammoth* first_mammoth = new Mammoth();
-        world.AddOrgAt(first_mammoth, 1);
+        world.AddOrgAt(first_mammoth, 55);
         /* Organism* first_organism = new Organism();
         world.AddOrgAt(first_organism, 0); */
         
@@ -76,6 +76,7 @@ class AEAnimate : public emp::web::Animate {
         int world_index = y * num_w_boxes + x;
         if (world.IsOccupied(world_index)) {
             emp::Ptr<Organism> organism_at = world.GetOrgPtr(world_index);
+            std::cout << "Getting organism color\n";
             return organism_at->GetColor();
         } else {
             // empty cells are white

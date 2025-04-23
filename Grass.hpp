@@ -20,15 +20,27 @@ class Grass : public Organism {
     }
 
     public:
-    void Process() {
-        Organism::Process();
+    void Process(emp::Random* random) {
+        Organism::Process(random);
         std::cout << "Grass is processed\n";
-        points += 1;
+        points += random->GetDouble();
     }
 
     public:
     std::string GetType() {
         return "Grass";
+    }
+
+    public:
+    bool CanReproduce() {
+        return points > 2;
+    }
+
+    public:
+    Organism* Reproduce() {
+        Organism* offspring = new Grass();
+        points -= 2;
+        return offspring;
     }
 };
 
