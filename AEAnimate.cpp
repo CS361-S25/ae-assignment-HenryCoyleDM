@@ -11,6 +11,10 @@
 // document for displaying stuff
 emp::web::Document doc{"target"};
 
+/*
+AEAnimate is an instance of this ALife simulation. It simulates a mammoth steppe ecosystem, featuring grass, mammoths,
+and trees. It sets up and maintains a MammothSteppe object, which is the simulation's world
+*/
 class AEAnimate : public emp::web::Animate {
     // the size of the world in cells
     const int num_h_boxes = 50;
@@ -35,10 +39,11 @@ class AEAnimate : public emp::web::Animate {
         // add control buttons to document
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
+        doc << GetDescriptiveText();
         // set the world size and let it handle the toroidal structure
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
-        // add starting organisms to the world: 5 grasses, 1 mammoth, and 1 tree
+        // add starting organisms to the world: 5 grasses, 1 mammoth, and 1 tree, at arbitrary locations
         Grass* first_grass = new Grass();
         world.AddOrgAt(first_grass, 0);
         Grass* second_grass = new Grass();
@@ -50,6 +55,8 @@ class AEAnimate : public emp::web::Animate {
         Grass* fifth_grass = new Grass();
         world.AddOrgAt(fifth_grass, 245);
         Mammoth* first_mammoth = new Mammoth();
+        // give the first mammoth enough energy to navigate to some grass
+        first_mammoth->points = 9.8;
         world.AddOrgAt(first_mammoth, 55);
         Tree* first_tree = new Tree();
         world.AddOrgAt(first_tree, 378);
@@ -58,6 +65,9 @@ class AEAnimate : public emp::web::Animate {
         
     }
 
+    /*
+    Updates the world and paints the new cells
+    */
     public:
     void DoFrame() override {
         canvas.Clear();
@@ -68,6 +78,9 @@ class AEAnimate : public emp::web::Animate {
         PaintAllSquares();
     }
 
+    /*
+    Paints all of the cells in the world onto the canvas
+    */
     private:
     void PaintAllSquares() {
         for (int x=0; x<num_w_boxes; x++) {
@@ -77,11 +90,17 @@ class AEAnimate : public emp::web::Animate {
         }
     }
 
+    /*
+    Paints the single cell (x, y) onto the canvas in the appropriate color
+    */
     private:
     void PaintSquareIfOccupied(int x, int y) {
         DrawRect(x, y, GetSquareColor(x, y));
     }
 
+    /*
+    Gets the color of a cell: white if empty, otherwise depends on the organism that's in that cell
+    */
     private:
     std::string GetSquareColor(int x, int y) {
         int world_index = y * num_w_boxes + x;
@@ -95,12 +114,35 @@ class AEAnimate : public emp::web::Animate {
         }
     }
 
+    /*
+    Draw a rectangular cell on the canvas at the position corresponding to (x, y) in the world
+    */
     private:
     void DrawRect(int x, int y, std::string color) {
         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, color, "black");
     }
+
+    /*
+    Some descriptive text about the Mammoth Steppe ecosystem that can be displayed on the webpage
+    */
+    private:
+    std::string GetDescriptiveText() {
+        return "The mammoth steppe was an incredibly biodiverse and productive ecosystem that spanned Eurasia and North America\n\
+                at the end of the last glacial maximum. It featured large swaths of grassland and megafauna like wolly\n\
+                mammoths. The low albedo of the grass kept the whole planet cooler, keeping Earth in the last glacial maximum.\n\
+                Mammoths were responsible for trampling trees and saplings to protect the grasslands from the encroach of\n\
+                boreal forests, which have low productivity and high albedo. However, when the mammoths went extinct, very\n\
+                possibly by humans, the forests encroached on the grasslands, destroying the mammoth steppe and creating the\n\
+                now massive tundras of Eurasia and North America. The higher albedo of the tundras increased global temperatures\n\
+                and its low productivity hampered the production of permafrost, bringing Earth out of the last glacial maximum.\n\
+                While the mammoth steppe existed, therefore, the grasses and mammoths created a symboitic relationship to defend\n\
+                this ecosystem against trees, which is what this simulation depicts. Mammoths are colored red, grasses green,\n\
+                and trees blue. Like in the mammoth steppe, mammoths trample trees and eat grass, while the trees slowly take\n\
+                over land.";
+    }
 };
 
+// create an instance of the animator and start running it
 AEAnimate animator;
 
 int main() {
