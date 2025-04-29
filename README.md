@@ -1,1 +1,3 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/-GCLf3vW)
+
+MammothSteppe uses the Empirical framework to simulate the mammoth steppe ecosystem, a massive and productive biome that existed at the end of the last glacial maximum. The world features mammoths which eat grass. They also trample trees, preserving the mammoth steppe by stopping the encroachment of forests and maintaining room for grasslands. The project uses Emscripten to display the world on to a HTML page.
